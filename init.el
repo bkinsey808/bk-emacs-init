@@ -24,6 +24,7 @@
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 (defvaralias 'js-indent-level 'tab-width)
+(defvaralias 'css-indent-offset 'tab-width)
 
 ;; package manager
 (require 'package)
@@ -42,6 +43,10 @@
 (autoload 'tern-mode "tern.el" nil t)
 (add-hook 'js-mode-hook (lambda () (tern-mode t)))
 
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa/scss-mode-20150107.1400"))
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+
 ;; tern auto complete
 (eval-after-load 'tern
   '(progn
@@ -50,5 +55,29 @@
 
 ;; flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; If use bundled typescript.el,
+(require 'typescript)
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+
+(add-hook 'typescript-mode-hook
+          (lambda ()
+            (flycheck-mode t)))
+
+(require 'tss)
+
+;; Key binding
+(setq tss-popup-help-key "C-:")
+(setq tss-jump-to-definition-key "C->")
+(setq tss-implement-definition-key "C-c i")
+
+;; Make config suit for you. About the config item, eval the following sexp.
+;; (customize-group "tss")
+
+;; Do setting recommemded configuration
+(tss-config-default)
+
+;; 10 pt font
+(set-face-attribute 'default nil :height 100)
 
 ;;; init.el ends here
